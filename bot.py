@@ -76,27 +76,32 @@ class SimpleBot(object):
             TODO: POTENTIALLY SHOULD BE WAITING AFTER EACH COMMAND, CHECK THAT
         """
         line_buffer = ""  # String to hold incomming info
-        while True:
+        try:
+            while True:
 
-            while EOL not in line_buffer:
-                # Try to slurp one line at a time
-                line_buffer += self.connection.recv(512)
+                while EOL not in line_buffer:
+                    # Try to slurp one line at a time
+                    line_buffer += self.connection.recv(512)
 
-            cur_ind = line_buffer.index(EOL)
-            # The current line will be everything up to the first EOL
-            line = line_buffer[:cur_ind]
-            # everything else we're just going to throw back on the buffer
-            line_buffer = line_buffer[cur_ind + 2:]  # +2 accounts for \r\n
+                cur_ind = line_buffer.index(EOL)
+                # The current line will be everything up to the first EOL
+                line = line_buffer[:cur_ind]
+                # everything else we're just going to throw back on the buffer
+                line_buffer = line_buffer[cur_ind + 2:]  # +2 accounts for \r\n
 
-            prefix, command, args = parsemsg(line)
-            if command == "PING":
-                self.sendPong(args.pop())
-            if command == END_OF_MOTD:
-                self.joinChannel()
-            if command == BAD_NICKNAME:
-                logging.error("BAD NICK STOPPING BOT")
-                self.closeConnection("BAD NICK, PEACE OUT")
-                return
+                prefix, command, args = parsemsg(line)
+                if command == "PING":
+                    self.sendPong(args.pop())
+                if command == END_OF_MOTD:
+                    self.joinChannel()
+                if command == BAD_NICKNAME:
+                    logging.error("BAD NICK STOPPING BOT")
+                    self.closeConnection("BAD NICK, PEACE OUT")
+                    return
+
+        except KeyboardInterrupt:
+            logging.debug("KeyboardInerrupt, closing down")
+            self.closeConnection("I'VE BEEN KILLED AVENGE ME")                   
 
     def writeLine(self, line):
         """ Everything should be calling this function to send stuff to server
