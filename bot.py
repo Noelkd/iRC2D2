@@ -22,7 +22,7 @@ def parsemsg(message_string):
     if not message_string:
         return "", "", ""
 
-    if message_string[0] == ':':
+    if message_string.startswith(':'):
         prefix, message_string = message_string[1:].split(' ', 1)
 
     if message_string.find(' :') != -1:
