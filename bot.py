@@ -1,5 +1,8 @@
 import logging
 import socket
+import random
+
+from messages import death
 
 EOL = "\r\n"
 END_OF_MOTD = "376"
@@ -101,7 +104,7 @@ class SimpleBot(object):
 
         except KeyboardInterrupt:
             logging.debug("KeyboardInerrupt, closing down")
-            self.closeConnection("I'VE BEEN KILLED AVENGE ME")
+            self.closeConnection(random.choice(death))
 
     def writeLine(self, line):
         """ Everything should be calling this function to send stuff to server
@@ -138,3 +141,4 @@ if __name__ == '__main__':
     }
     ircbot = SimpleBot(**start_args)
     ircbot.connect()
+
