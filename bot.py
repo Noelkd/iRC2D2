@@ -30,7 +30,7 @@ def parsemsg(message_string):
         args = message_string.split()
     command = args.pop(0)
     logging.debug("PREFIX: {0} COMMAND: {1} ARGS: {2}"
-                   .format(prefix, command, args))
+                  .format(prefix, command, args))
     return prefix, command, args
 
 
@@ -47,7 +47,7 @@ class SimpleBot(object):
         self.chan = channel
         self.connection = None
         logging.debug("New Bot named {0} created for channel {1} on {2}"
-                     .format(self.name, self.chan, self.server))
+                      .format(self.name, self.chan, self.server))
 
     def connect(self):
         """ Connect to given server """
@@ -101,7 +101,7 @@ class SimpleBot(object):
 
         except KeyboardInterrupt:
             logging.debug("KeyboardInerrupt, closing down")
-            self.closeConnection("I'VE BEEN KILLED AVENGE ME")                   
+            self.closeConnection("I'VE BEEN KILLED AVENGE ME")
 
     def writeLine(self, line):
         """ Everything should be calling this function to send stuff to server
@@ -112,7 +112,7 @@ class SimpleBot(object):
         """ Once connected to server setup name and nickname stuff """
         self.writeLine("NICK {0}".format(self.nick))
         self.writeLine("USER {0} {1} * :{2}"
-                            .format(self.nick, socket.gethostname(), self.name))
+                       .format(self.nick, socket.gethostname(), self.name))
 
     def sendPong(self, prefix):
         """ Sends PONG back to server """
@@ -131,10 +131,10 @@ class SimpleBot(object):
 
 if __name__ == '__main__':
     start_args = {
-    "server": 'irc.freenode.org',
-    "channel": '#turboburger',
-    "nick": 'NoelBot',
-    "name": "Noelbot",
+        "server": 'irc.freenode.org',
+        "channel": '#turboburger',
+        "nick": 'NoelBot',
+        "name": "Noelbot",
     }
     ircbot = SimpleBot(**start_args)
     ircbot.connect()
